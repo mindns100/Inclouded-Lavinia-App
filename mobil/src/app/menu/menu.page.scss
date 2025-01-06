@@ -1,0 +1,141 @@
+html, body {
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+ion-title{
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font: 30px bold;
+  //font-family: Segoe UI Black, serif;
+  display: flex;
+}
+ion-toolbar{
+  display: flex;
+}
+
+ion-header{
+  padding: 0;
+  margin: 0;
+  height: 10%;
+  float: top;
+  display: flex;
+  background-color: black;
+  overflow: hidden;
+}
+
+ion-content{
+  display: flex;
+  overflow: hidden;
+  //border: solid blue 5px;
+  height: 90%;
+  float: bottom;
+}
+
+ion-grid{
+  display: flex;
+  //border: solid red 5px;
+  overflow: hidden;
+  background: #00189f;
+  height: 100%;
+}
+ion-row{
+  overflow: hidden;
+  display: flex;
+}
+ion-col{
+  overflow: hidden;
+  display: flex;
+
+}
+
+ion-card {
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  background-color: #b7cee7;
+
+}
+
+ion-card-content {
+  overflow: hidden;
+  border: solid black 4px;
+  justify-content: center;
+  text-align: center;
+  //font: bold 30px Copperplate Gothic, sans-serif;
+  color: black;
+  cursor: pointer;
+
+}
+
+
+img{
+  padding-top: 5%;
+  width: 70%;
+  height: auto;
+  align-self: center;
+  cursor: pointer;
+}
+
+
+p {
+  //font-size: 4vw;
+  font: bold 6vw "Arial Rounded MT Bold", sans-serif;
+}
+
+@media only screen and (max-width: 600px) {
+  p {
+    font-size: 5vw;
+  }
+}
+
+// medium
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  p {
+    font-size: 4vw;
+  }
+}
+
+// large
+@media only screen and (min-width: 1025px) {
+  p {
+    font-size: 2vw;
+  }
+}
+////////////////////////////////////////////////////
+
+/* Small screens */
+img {
+  width: 40%;
+  height: auto;
+}
+
+@media only screen and (min-width: 601px) {
+  /* Medium screens */
+  img {
+    width: 40%;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  /* Large screens */
+  img {
+    width: 40%;
+    height: auto;
+  }
+}
+
+.notyet{
+  filter: grayscale(80%);
+  background-color: #9d9d9d;
+  cursor: none;
+}
+
+
+

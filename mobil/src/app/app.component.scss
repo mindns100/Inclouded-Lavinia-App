@@ -1,0 +1,23 @@
+.notifier {
+    position: absolute;
+    bottom: 0px;
+    z-index: 999999;
+    height: 50px;
+    line-height: 50px;
+    font-size: medium;
+    text-align: center;
+    width: 100%;
+}
+
+.connection-notifier {
+    background: var(--ion-color-warning);
+}
+
+.top-space {
+    bottom: 50px !important;
+}
+
+app-menu{
+    height: 100%;
+ }
+

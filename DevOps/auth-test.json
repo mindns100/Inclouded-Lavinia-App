@@ -1,0 +1,11 @@
+{"users": [
+{
+  "localId": "1SNCzUY3KJMMjHKmvj8pM4LC0Eo2",
+  "email": "admin@inclouded.hu",
+  "emailVerified": false,
+  "passwordHash": "Z5VbSM3ZyRYTYTWemCU8kmoFhp5SNA0nsIVkibMT/UTzHy4bpApsl5P7mNoCbefKViW9aLt3IQAnAwPDtfLCoQ==",
+  "salt": "T+T3gm1cP5rghw==",
+  "lastSignedInAt": "1674210035689",
+  "createdAt": "1673872182024",
+  "providerUserInfo": []
+}]}

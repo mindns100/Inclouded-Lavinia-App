@@ -1,0 +1,7 @@
+{
+  "name": "inclouded-lavinia",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

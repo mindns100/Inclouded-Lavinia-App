@@ -1,0 +1,50 @@
+{
+  "projects": {
+    "default": "szkt-parkolas-dev",
+    "test": "szkt-parkolas-test",
+    "staging": "szkt-parkolas-stg",
+    "production": "szkt-parkolas-prod"
+  },
+  "targets": {
+    "szkt-parkolas-dev": {
+      "hosting": {
+        "web": [
+          "szkt-parkolas-dev"
+        ],
+        "mobil": [
+          "szkt-parkolas-dev-mobil"
+        ]
+      }
+    },
+    "szkt-parkolas-test": {
+      "hosting": {
+        "web": [
+          "szkt-parkolas-test"
+        ],
+        "mobil": [
+          "szkt-parkolas-test-mobil"
+        ]
+      }
+    },
+    "szkt-parkolas-stg": {
+      "hosting": {
+        "web": [
+          "szkt-parkolas-stg"
+        ],
+        "mobil": [
+          "szkt-parkolas-stg-mobil"
+        ]
+      }
+    },
+    "szkt-parkolas-prod": {
+      "hosting": {
+        "web": [
+          "szkt-parkolas-prod"
+        ],
+        "mobil": [
+          "szkt-parkolas-prod-mobil"
+        ]
+      }
+    }
+  }
+}

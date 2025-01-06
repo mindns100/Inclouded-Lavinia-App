@@ -1,0 +1,38 @@
+<ion-app>
+  <ion-split-pane contentId="main-content" style="--side-max-width: 270px;">
+    <ion-menu contentId="main-content" type="push">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>
+            {{'SITE_NAME' | translate}}
+          </ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list lines="full">
+          <ng-container *ngFor="let p of appPages; let i = index">
+            <ion-menu-toggle auto-hide="false" *ngIf="!p.hidden" id="{{appPages[i].url}}">
+              <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+                <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                <ion-label>
+                  {{p.title | translate}}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ng-container>
+        </ion-list>
+        <ion-list *ngIf="role?.code !== 'anonymous'" lines="none">
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="logout()" button detail="false">
+              <ion-icon slot="start" name="log-out"></ion-icon>
+              <ion-label>
+                {{ 'LOGOUT' | translate }}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

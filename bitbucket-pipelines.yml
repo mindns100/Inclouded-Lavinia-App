@@ -1,0 +1,293 @@
+pipelines:
+  branches:
+    # Build and Deploy Web/Mobil Dev
+    master:
+      - parallel:
+          - step:
+              name: "Build and deploy Web Dev"
+              image: wlabdevices/circleci-web-deploy
+              deployment: dev-web
+              script:
+                - cd ./web/
+                - npm install
+                - ionic build -c=dev
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use default && firebase deploy --only hosting:web
+          - step:
+              name: "Build and deploy Mobil Dev"
+              image: wlabdevices/circleci-web-deploy
+              deployment: dev-mobil
+              script:
+                - cd ./mobil/
+                - npm install
+                - ionic build -c=dev
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use default && firebase deploy --only hosting:mobil
+          - step:
+              name: "Build and deploy Web Test"
+              image: wlabdevices/circleci-web-deploy
+              deployment: test-web
+              script:
+                - cd ./web/
+                - npm i --save
+                - ionic build -c=test
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use test && firebase deploy --only hosting:web
+          - step:
+              name: "Build and deploy Mobil Test"
+              image: wlabdevices/circleci-web-deploy
+              deployment: test-mobil
+              script:
+                - cd ./mobil/
+                - npm i --save
+                - ionic build -c=test
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use test && firebase deploy --only hosting:mobil
+          - step:
+              name: "Set up Test Firebase"
+              image: wlabdevices/circleci-web-deploy
+              deployment: test-firebase
+              script:
+                - cd ./DevOps
+                - firebase use test
+                - cd ./db-export-import
+                - npm i --save
+                - firebase firestore:delete --all-collections -y
+                - node import.js Users.json
+                - node import.js Roles.json
+                - node deleteAllUser.js
+                - node deleteAllFile.js
+                - firebase auth:import auth-test.json --hash-algo=SCRYPT --hash-key=WR3CGXY1CI4j/SjWPASB4Hq6Kby/aosPVzxCU5VHDR3ZEiLkhpGPKyzKdYnzy0R/2CJJVaRL/6ULBizNs9fFCA== --salt-separator=Bw== --rounds=8 --mem-cost=14
+    # Build and Deploy Web/Mobil Staging
+    release/staging-web:
+      - parallel:
+          - step:
+              name: "Build and deploy Web Staging"
+              image: wlabdevices/circleci-web-deploy
+              deployment: staging-web
+              script:
+                - cd ./web/
+                - npm install
+                - ionic build -c=staging
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use staging && firebase deploy --only hosting:web
+          - step:
+              name: "Build and deploy Mobil Staging"
+              image: wlabdevices/circleci-web-deploy
+              deployment: staging-mobil
+              script:
+                - cd ./mobil/
+                - npm install
+                - ionic build -c=staging
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use staging && firebase deploy --only hosting:mobil
+    # Build and Deploy Web/Mobil Production
+    release/prod-web:
+      - parallel:
+          - step:
+              name: "Build and deploy Web Prod"
+              image: wlabdevices/circleci-web-deploy
+              deployment: prod-web
+              script:
+                - cd ./web/
+                - npm install
+                - ionic build -c=production
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use production && firebase deploy --only hosting:web
+          - step:
+              name: "Build and deploy Mobil Prod"
+              image: wlabdevices/circleci-web-deploy
+              deployment: prod-mobil
+              script:
+                - cd ./mobil/
+                - npm install
+                - ionic build -c=production
+                - cp -R ./www ./../DevOps/www
+                - cd ./../DevOps && firebase use production && firebase deploy --only hosting:mobil
+    # Build and Deploy Android Dev
+    release/dev-android:
+      - step:
+          name: "Build and Deploy Android Dev"
+          image: wlabdevices/circleci-android-deploy
+          deployment: dev-android
+          script:
+            - npm i -g deploy-aab-google-play
+            - cd ./ios/
+            - npm install
+            - npm run androiddev
+            - deploy-aab-google-play -e -k ../DevOps/pc-api-7086059921548429369-804-54fb9a0babf1.json -p $(< bundle_id.txt) -a ./platforms/android/app/build/outputs/bundle/release/app-release.aab -t internal -r "$(< release_notes.txt)"
+    # Build and Deploy Android Staging
+    release/staging-android:
+      - step:
+          name: "Build and Deploy Android Staging"
+          image: wlabdevices/circleci-android-deploy
+          deployment: staging-android
+          script:
+            - npm i -g deploy-aab-google-play
+            - cd ./ios/
+            - npm install
+            - npm run androidstaging
+            - deploy-aab-google-play -e -k ../DevOps/pc-api-7086059921548429369-804-54fb9a0babf1.json -p $(< bundle_id.txt) -a ./platforms/android/app/build/outputs/bundle/release/app-release.aab -t internal -r "$(< release_notes.txt)"
+    # Build and Deploy Android Production
+    release/prod-android:
+      - step:
+          name: "Build and Deploy Android Production"
+          image: wlabdevices/circleci-android-deploy
+          deployment: prod-android
+          script:
+            - npm i -g deploy-aab-google-play
+            - cd ./ios/
+            - npm install
+            - npm run androidprod
+            - deploy-aab-google-play -e -k ../DevOps/pc-api-7086059921548429369-804-54fb9a0babf1.json -p $(< bundle_id.txt) -a ./platforms/android/app/build/outputs/bundle/release/app-release.aab -t internal -r "$(< release_notes.txt)"
+    # Build and Deploy IOS Dev
+    release/dev-ios:
+      - step:
+          runs-on:
+            - self.hosted
+            - macos
+          name: "Build and Deploy IOS Dev"
+          deployment: dev-ios
+          script:
+            - cd ./ios/
+            - npm i --save
+            - node deploy-ios.js dev
+    # Build and Deploy IOS Staging
+    release/staging-ios:
+      - step:
+          runs-on:
+            - self.hosted
+            - macos
+          name: "Build and Deploy IOS Staging"
+          deployment: staging-ios
+          script:
+            - cd ./ios/
+            - npm i --save
+            - node deploy-ios.js staging
+    # Build and Deploy IOS Production
+    release/prod-ios:
+      - step:
+          runs-on:
+            - self.hosted
+            - macos
+          name: "Build and Deploy IOS Production"
+          deployment: prod-ios
+          script:
+            - cd ./ios/
+            - npm i --save
+            - node deploy-ios.js prod
+    # Deploy indexes
+    release/dev-index:
+      - step:
+          name: "Deploy Dev Indexes"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: dev-index
+          script:
+            - cd ./DevOps && firebase use default && firebase deploy --force --only firestore:indexes
+    release/test-index:
+      - step:
+          name: "Deploy Test Indexes"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: test-index
+          script:
+            - cd ./DevOps && firebase use test && firebase deploy --force --only firestore:indexes
+    release/staging-index:
+      - step:
+          name: "Deploy Staging Indexes"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: staging-index
+          script:
+            - cd ./DevOps && firebase use staging && firebase deploy --force --only firestore:indexes
+    release/prod-index:
+      - step:
+          name: "Deploy Production Indexes"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: prod-index
+          script:
+            - cd ./DevOps && firebase use production && firebase deploy --force --only firestore:indexes
+    # Deploy rules
+    release/dev-rules:
+      - step:
+          name: "Deploy Dev Rules"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: dev-rules
+          script:
+            - cd ./DevOps
+            - firebase use default
+            - firebase deploy --only firestore:rules
+            - firebase deploy --only storage:rules
+    release/test-rules:
+      - step:
+          name: "Deploy Test Rules"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: test-rules
+          script:
+            - cd ./DevOps
+            - firebase use test
+            - firebase deploy --only firestore:rules
+            - firebase deploy --only storage:rules
+    release/staging-rules:
+      - step:
+          name: "Deploy Staging Rules"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: staging-rules
+          script:
+            - cd ./DevOps
+            - firebase use staging
+            - firebase deploy --only firestore:rules
+            - firebase deploy --only storage:rules
+    release/prod-rules:
+      - step:
+          name: "Deploy Production Rules"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: prod-rules
+          script:
+            - cd ./DevOps
+            - firebase use production
+            - firebase deploy --only firestore:rules
+            - firebase deploy --only storage:rules
+    # Deploy Cloud Functions
+    release/dev-ncf:
+      - step:
+          name: "Deploy Dev Cloud Function"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: dev-ncf
+          script:
+            - cd ./cloud-function/functions
+            - npm install
+            - jq '.mode = "dev"' ./src/config/firebase_config.json | sponge ./src/config/firebase_config.json
+            - firebase use default
+            - node deploy.js
+    release/test-ncf:
+      - step:
+          name: "Deploy Test Cloud Function"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: test-ncf
+          script:
+            - cd ./cloud-function/functions
+            - npm install
+            - jq '.mode = "test"' ./src/config/firebase_config.json | sponge ./src/config/firebase_config.json
+            - firebase use test
+            - node deploy.js
+    release/staging-ncf:
+      - step:
+          name: "Deploy Staging Cloud Function"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: staging-ncf
+          script:
+            - cd ./cloud-function/functions
+            - npm install
+            - jq '.mode = "staging"' ./src/config/firebase_config.json | sponge ./src/config/firebase_config.json
+            - firebase use staging
+            - node deploy.js
+    release/prod-ncf:
+      - step:
+          name: "Deploy Prod Cloud Function"
+          image: wlabdevices/circleci-nodecf-deploy
+          deployment: prod-ncf
+          script:
+            - cd ./cloud-function/functions
+            - npm install
+            - jq '.mode = "production"' ./src/config/firebase_config.json | sponge ./src/config/firebase_config.json
+            - firebase use production
+            - node deploy.js

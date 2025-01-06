@@ -1,0 +1,105 @@
+@import "~@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+.wide-modal::part(content) {
+    width: 100%;
+    height: 100%;
+}
+
+.long-modal::part(content) {
+    height: 100%;
+}
+
+.alert-wrapper .alert-message {
+    color: black !important;
+    text-align: center !important;
+}
+
+.alert-wrapper .alert-title {
+    text-align: center !important;
+}
+
+.alert-wrapper .alert-head {
+    text-align: center !important;
+}
+
+.alert-wrapper .alert-button {
+    text-align: center !important;
+    margin: 2px !important;
+    width: 100%;
+    border: 1px solid;
+}
+
+.alert-wrapper .alert-button .alert-button-inner {
+    justify-content: center !important;
+}
+
+.settingswarn .alert-wrapper {
+    max-width: 300px !important;
+    max-height: 90% !important;
+}
+
+.settingswarn .alert-message {
+    text-align: center;
+}
+
+.settingswarn .alert-message div img {
+    width: 100px;
+}
+
+.delete-button {
+    color: var(--ion-color-danger) !important;
+}
+
+.wide-alert {
+    .alert-wrapper {
+        max-width: unset !important;
+        max-height: 90% !important;
+    }
+    .alert-radio-group,
+    .alert-checkbox-group {
+        max-width: unset !important;
+        max-height: unset !important;
+        height: 90% !important;
+        width: calc(90vw) !important;
+    }
+    .alert-wrapper .alert-button {
+        width: 48%;
+    }
+    .alert-button-group {
+        justify-content: center;
+    }
+}
+
+.pending {
+    border-left: 6px solid var(--ion-color-warning);
+}
+
+.accepted {
+    border-left: 6px solid var(--ion-color-success);
+}
+
+.rejected {
+    border-left: 6px solid var(--ion-color-danger);
+}
+
+.bg-light-blue {
+    background-color: #eaf4f7 !important;
+    --background-color: #eaf4f7 !important;
+    --background: #eaf4f7 !important;
+}
+
+ion-card {
+    border-radius: 5px !important;
+    border: 0px none !important;
+    -webkit-box-shadow: 0px 0px 20px 0px #d6d6d9 !important;
+    box-shadow: 0px 0px 20px 0px #d6d6d9 !important;
+}
